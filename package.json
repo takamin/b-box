@@ -1,0 +1,20 @@
+{
+  "name": "b-box",
+  "version": "0.1.0",
+  "description": "Border-box geometric information for the DOM element of HTML5",
+  "main": "b-box.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/takamin/b-box.git"
+  },
+  "author": "vzg03566@gmail.com",
+  "license": "MIT",
+  "homepage": "https://github.com/takamin/b-box#readme",
+  "keywords": [
+    "box-sizing",
+    "border-box"
+  ]
+}
