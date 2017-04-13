@@ -99,6 +99,36 @@
             this.marginRightNc();
     };
 
+    BBox.prototype.getSize = function() {
+        var rect = BBox.Rect.fromBBox(this);
+        return new BBox.Size(
+            rect.right - rect.left,
+            rect.bottom - rect.top);
+    };
+
+    function Size(w,h) {
+        this._w = w;
+        this._h = h;
+    }
+
+    BBox.Size = Size;
+
+    Size.prototype.getAspectRatio = function() {
+        return this._w / this._h;
+    };
+    Size.prototype.getMaxInscribedSize = function(naturalSize) {
+        var aspect = naturalSize.getAspectRatio();
+        if(aspect < this.getAspectRatio()) {
+            return new Size(Math.round(this._h * aspect), this._h);
+        } else {
+            return new Size(this._w, Math.round(this._w / aspect));
+        }
+    };
+    Size.prototype.applyElementAttributeSize = function(element) {
+        element.setAttribute("width", this._w + "px");
+        element.setAttribute("height", this._h + "px");
+    };
+
     BBox.Rect = function(top, left, right, bottom) {
         this.top = top || 0;
         this.left = left || 0;
