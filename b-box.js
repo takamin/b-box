@@ -99,6 +99,13 @@
             this.marginRightNc();
     };
 
+    BBox.prototype.setBound = function(rect) {
+        this._element.style.top = rect.top + "px";
+        this._element.style.left = rect.left + "px";
+        this._element.style.right = rect.right + "px";
+        this._element.style.bottom = rect.bottom + "px";
+    };
+
     BBox.prototype.getSize = function() {
         var rect = BBox.Rect.fromBBox(this);
         return new BBox.Size(
@@ -129,28 +136,25 @@
         element.setAttribute("height", this._h + "px");
     };
 
-    BBox.Rect = function(top, left, right, bottom) {
+    function Rect(top, left, right, bottom) {
         this.top = top || 0;
         this.left = left || 0;
         this.right = right || 0;
         this.bottom = bottom || 0;
     };
-    BBox.Rect.clone = function (that) {
-        return new BBox.Rect(that.top, that.left, that.right, that.bottom);
+
+    BBox.Rect = Rect;
+
+    Rect.clone = function (that) {
+        return new Rect(that.top, that.left, that.right, that.bottom);
     };
-    BBox.Rect.fromBBox = function(bbox) {
-        return new BBox.Rect(
+
+    Rect.fromBBox = function(bbox) {
+        return new Rect(
             bbox.marginTopNc(),
             bbox.marginLeftNc(),
             bbox.marginLeftNc() + bbox.px("width") - bbox.marginRightNc(),
             bbox.marginTopNc() + bbox.px("height") - bbox.marginBottomNc());
-    };
-
-    BBox.prototype.setBound = function(rect) {
-        this._element.style.top = rect.top + "px";
-        this._element.style.left = rect.left + "px";
-        this._element.style.right = rect.right + "px";
-        this._element.style.bottom = rect.bottom + "px";
     };
 
     try {
