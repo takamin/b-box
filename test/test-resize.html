@@ -1,0 +1,31 @@
+<html>
+    <head>
+<style>
+#testTarget {
+    float left; width: 50%; height:50%;
+    background-color:blue; color:white;
+    text-align:center;
+}
+</style>
+    </head>
+    <body>
+        <div id='testTarget'>
+            W<span class="style-view width">???</span>
+            ×
+            H<span class="style-view height">???</span>
+        </div>
+    </body>
+    <script src="../b-box.js"></script>
+    <script>
+        let element = document.getElementById("testTarget");
+        let bbox = new BBox(element, {autoUpdate:true});
+        let viewW = element.querySelector("#testTarget .style-view.width");
+        let viewH = element.querySelector("#testTarget .style-view.height");
+        let showSize = () => {
+            viewW.innerHTML = bbox.width;
+            viewH.innerHTML = bbox.height;
+        };
+        showSize();
+        window.addEventListener("resize", () => { showSize(); });
+    </script>
+</html>
