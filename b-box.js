@@ -1,11 +1,26 @@
 (function(global) {
     "use strict";
 
-    function BBox(element) {
+    function BBox(element, opt) {
         this._element = element;
-        this._element.addEventListener("resize", function() {
-            this.update();
-        }.bind(this));
+        this._opt = {
+            autoUpdate: false,
+            context: global
+        };
+        opt = opt || {};
+        Object.keys(this._opt).forEach( key => {
+            if(key in opt) {
+                this._opt[key] = opt[key];
+            }
+        });
+        if(!("getComputedStyle" in this._opt.context)) {
+            throw new Error("Invalid window(web context) object specified");
+        }
+        if(this._opt.autoUpdate) {
+            this._opt.context.addEventListener("resize", () => {
+                this.update();
+            });
+        }
         this.update();
     }
 
@@ -31,7 +46,7 @@
     ];
 
     BBox.prototype.update = function() {
-        this._style = getComputedStyle(this._element, "");
+        this._style = this._opt.context.getComputedStyle(this._element, "");
         BBox.LengthKeys.forEach(function(key) {
             if(key in this._style) {
                 this[key] = this._style[key];
@@ -113,44 +128,40 @@
             rect.bottom - rect.top);
     };
 
-    function Size(w,h) {
+    BBox.Size = function(w,h) {
         this._w = w;
         this._h = h;
     }
 
-    BBox.Size = Size;
-
-    Size.prototype.getAspectRatio = function() {
+    BBox.Size.prototype.getAspectRatio = function() {
         return this._w / this._h;
     };
-    Size.prototype.getMaxInscribedSize = function(naturalSize) {
+    BBox.Size.prototype.getMaxInscribedSize = function(naturalSize) {
         var aspect = naturalSize.getAspectRatio();
         if(aspect < this.getAspectRatio()) {
-            return new Size(Math.round(this._h * aspect), this._h);
+            return new BBox.Size(Math.round(this._h * aspect), this._h);
         } else {
-            return new Size(this._w, Math.round(this._w / aspect));
+            return new BBox.Size(this._w, Math.round(this._w / aspect));
         }
     };
-    Size.prototype.applyElementAttributeSize = function(element) {
+    BBox.Size.prototype.applyElementAttributeSize = function(element) {
         element.setAttribute("width", this._w + "px");
         element.setAttribute("height", this._h + "px");
     };
 
-    function Rect(top, left, right, bottom) {
+    BBox.Rect = function(top, left, right, bottom) {
         this.top = top || 0;
         this.left = left || 0;
         this.right = right || 0;
         this.bottom = bottom || 0;
     };
 
-    BBox.Rect = Rect;
-
-    Rect.clone = function (that) {
-        return new Rect(that.top, that.left, that.right, that.bottom);
+    BBox.Rect.clone = function (that) {
+        return new BBox.Rect(that.top, that.left, that.right, that.bottom);
     };
 
-    Rect.fromBBox = function(bbox) {
-        return new Rect(
+    BBox.Rect.fromBBox = function(bbox) {
+        return new BBox.Rect(
             bbox.marginTopNc(),
             bbox.marginLeftNc(),
             bbox.marginLeftNc() + bbox.px("width") - bbox.marginRightNc(),
