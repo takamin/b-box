@@ -1,6 +1,6 @@
 {
   "name": "b-box",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Border-box geometric information for the DOM element of HTML5",
   "main": "b-box.js",
   "scripts": {
