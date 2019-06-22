@@ -1,6 +1,6 @@
 {
   "name": "b-box",
-  "version": "0.1.2",
+  "version": "1.0.0",
   "description": "Border-box geometric information for the DOM element of HTML5",
   "main": "b-box.js",
   "scripts": {
@@ -21,8 +21,8 @@
     "border-box"
   ],
   "devDependencies": {
-    "chai": "^4.1.2",
-    "jsdom": "^11.9.0",
-    "mocha": "^5.1.1"
+    "chai": "^4.2.0",
+    "jsdom": "^11.12.0",
+    "mocha": "^5.2.0"
   }
 }
